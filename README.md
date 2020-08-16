@@ -1,1 +1,1 @@
-# YouTube-Viral-Thumbnail-detector
+# YouTube-Video-Quality-detector
