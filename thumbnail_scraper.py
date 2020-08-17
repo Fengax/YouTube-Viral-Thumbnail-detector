@@ -1,3 +1,4 @@
+import urllib.request
 from googleapiclient.discovery import build
 
 viral_list = ["Viral", "Normal", "Shit"]
@@ -16,7 +17,7 @@ youtube = build("youtube", "v3", developerKey=api_key)
 
 request_channel = youtube.channels().list(
     part = "statistics",
-    id = "UC-lHJZR3Gqxm24_Vd_AJ5Yw"
+    id = "UCtMVHI3AJD4Qk4hcbZnI9ZQ"
 )
 
 items = request_channel.execute()['items']
@@ -28,12 +29,13 @@ sub_count = stats["subscriberCount"]
 avg_view = int(total_views) // int(total_videos)
 
 pageToken = ""
+counter = 1000000
 while True:
     print("New page")
 
     request_videos = youtube.search().list(
         part="snippet",
-        channelId="UC-lHJZR3Gqxm24_Vd_AJ5Yw",
+        channelId="UCtMVHI3AJD4Qk4hcbZnI9ZQ",
         maxResults="50",
         type="video",
         pageToken = pageToken
@@ -64,4 +66,16 @@ while True:
         likeRatio = int(likeCount) / (int(likeCount) + int(dislikeCount))
         viewCount = stats["viewCount"]
 
-        print(viral_list[calcViral(int(avg_view), int(viewCount), likeRatio)])
+        virality = calcViral(int(avg_view), int(viewCount), likeRatio)
+        if virality == 0:
+            counter += 1
+            urllib.request.urlretrieve(url, "D:/images/viral/" + str(counter) + ".jpg")
+            print("Stored a {} thumbnail".format(viral_list[virality]))
+        elif virality == 1:
+            counter += 1
+            urllib.request.urlretrieve(url, "D:/images/normal/" + str(counter) + ".jpg")
+            print("Stored a {} thumbnail".format(viral_list[virality]))
+        else:
+            counter += 1
+            urllib.request.urlretrieve(url, "D:/images/bad/" + str(counter) + ".jpg")
+            print("Stored a {} thumbnail".format(viral_list[virality]))
