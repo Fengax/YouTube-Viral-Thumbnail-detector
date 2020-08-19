@@ -11,7 +11,7 @@ def calcViral(avgView, view, likeRatio):
     else:
         return 2
 
-api_key = "AIzaSyDiUAZTch_AnohE1J7SOoaQTpFK_ZC_Glo"
+api_key = "bruh"
 
 youtube = build("youtube", "v3", developerKey=api_key)
 
